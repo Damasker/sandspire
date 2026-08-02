@@ -1,0 +1,18 @@
+{
+  "id": "coil_quad",
+  "name": "Coil Quad",
+  "faction": "coilward",
+  "label": "CQD",
+  "cost": 230,
+  "built_at": "b_factory",
+  "hp": 240,
+  "armor": "medium",
+  "dps": 16,
+  "range": "med",
+  "speed": 120,
+  "build_time": 5.0,
+  "vision_tiles": 6,
+  "radius": 13,
+  "color": [0.28, 0.6, 0.7],
+  "role": "armoured generalist"
+}

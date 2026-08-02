@@ -1,0 +1,18 @@
+{
+  "id": "coil_trike",
+  "name": "Coil Scout",
+  "faction": "coilward",
+  "label": "CSK",
+  "cost": 160,
+  "built_at": "b_factory",
+  "hp": 140,
+  "armor": "light",
+  "dps": 10,
+  "range": "short",
+  "speed": 150,
+  "build_time": 3.5,
+  "vision_tiles": 8,
+  "radius": 11,
+  "color": [0.35, 0.75, 0.8],
+  "role": "slower scout"
+}

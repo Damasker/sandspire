@@ -1,0 +1,21 @@
+{
+  "id": "coil_harvester",
+  "name": "Coil Harvester",
+  "faction": "coilward",
+  "label": "CHV",
+  "cost": 0,
+  "built_at": "b_refinery",
+  "hp": 480,
+  "armor": "heavy",
+  "dps": 0,
+  "range": "none",
+  "speed": 100,
+  "build_time": 5.0,
+  "cargo_capacity": 110,
+  "harvest_rate": 45,
+  "unload_rate": 90,
+  "vision_tiles": 4,
+  "radius": 16,
+  "color": [0.4, 0.7, 0.75],
+  "role": "tough slow economy"
+}

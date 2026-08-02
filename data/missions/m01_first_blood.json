@@ -1,0 +1,53 @@
+{
+  "id": "m01_first_blood",
+  "title": "First Blood",
+  "campaign_index": 1,
+  "map": {
+    "scene": "res://scenes/main.tscn",
+    "params": {
+      "variant": "tutorial_ridge",
+      "map_seed": 11042,
+      "enemy_force": "light",
+      "player_force": "tutorial",
+      "tag_enemy_base": false
+    }
+  },
+  "player_faction": "aureate",
+  "enemy_faction": "ashveil",
+  "difficulty": "easy",
+  "ai_enabled": false,
+  "worm_enabled": false,
+  "starting_credits": 200,
+  "briefing": {
+    "advisor": "Mentat Kael",
+    "text": "5-minute loop — do this in order:\n1) LMB-select the harvester (yellow spice bar). It auto-gathers at the bloom and unloads at your Refinery → Credits rise.\n2) Press ? for hotkeys. Build with 1–6 (Windtrap if power dips). Select Factory → Q–Y to queue a tank.\n3) Select combat units, RMB the red Ashveil camp on the eastern rock — destroy it.\nGuard your Construction Yard. Enemy AI is off this mission. Optional: harvest 50 credits."
+  },
+  "objectives": [
+    {
+      "id": "destroy_camp",
+      "type": "destroy",
+      "group": "enemy_camp",
+      "count": 1,
+      "required": true,
+      "label": "Destroy the Ashveil camp"
+    },
+    {
+      "id": "harvest_seed",
+      "type": "harvest",
+      "amount": 50,
+      "required": false,
+      "label": "Harvest 50 credits (optional)"
+    }
+  ],
+  "fail_conditions": [
+    {
+      "id": "lose_conyard",
+      "type": "building_lost",
+      "building_id": "b_conyard",
+      "team": "player",
+      "label": "Construction Yard destroyed"
+    }
+  ],
+  "win_text": "Victory — First blood. The ridge is quiet.",
+  "lose_text": "Defeat — Construction Yard lost."
+}

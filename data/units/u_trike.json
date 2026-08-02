@@ -1,0 +1,18 @@
+{
+  "id": "u_trike",
+  "name": "Scout Trike",
+  "faction": "aureate",
+  "label": "TRK",
+  "cost": 150,
+  "built_at": "b_factory",
+  "hp": 120,
+  "armor": "light",
+  "dps": 12,
+  "range": "short",
+  "speed": 180,
+  "build_time": 3.0,
+  "vision_tiles": 8,
+  "radius": 11,
+  "color": [0.3, 0.65, 0.95],
+  "role": "scout / raid"
+}

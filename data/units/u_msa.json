@@ -1,0 +1,18 @@
+{
+  "id": "u_msa",
+  "name": "Missile Launcher",
+  "faction": "aureate",
+  "label": "MSL",
+  "cost": 450,
+  "built_at": "b_factory",
+  "hp": 180,
+  "armor": "light",
+  "dps": 35,
+  "range": "long",
+  "speed": 95,
+  "build_time": 6.0,
+  "vision_tiles": 6,
+  "radius": 14,
+  "color": [0.55, 0.4, 0.85],
+  "role": "glass cannon"
+}

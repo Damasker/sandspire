@@ -1,0 +1,23 @@
+{
+  "id": "ashveil",
+  "name": "House Ashveil",
+  "short_name": "Ashveil",
+  "accent": [0.82, 0.38, 0.18],
+  "panel": [0.14, 0.08, 0.06, 0.9],
+  "blurb": "Raid house — fast light armor, flame infantry, softer tanks.",
+  "signature": "Flame Trooper area damage",
+  "roles": {
+    "infantry": "ash_infantry",
+    "heavy": "ash_flame",
+    "harvester": "ash_harvester",
+    "trike": "ash_trike",
+    "quad": "ash_quad",
+    "tank": "ash_tank"
+  },
+  "produces": {
+    "b_barracks": ["ash_infantry", "ash_flame"],
+    "b_factory": ["ash_trike", "ash_quad", "ash_tank"],
+    "b_refinery": ["ash_harvester"]
+  },
+  "ai_units": ["ash_infantry", "ash_quad", "ash_tank"]
+}

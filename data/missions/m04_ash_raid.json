@@ -1,0 +1,45 @@
+{
+  "id": "m04_ash_raid",
+  "title": "Ash Raid",
+  "campaign_index": 4,
+  "map": {
+    "scene": "res://scenes/main.tscn",
+    "params": {
+      "variant": "raid_scar",
+      "map_seed": 44168,
+      "enemy_force": "standard",
+      "player_force": "raid"
+    }
+  },
+  "player_faction": "ashveil",
+  "enemy_faction": "aureate",
+  "difficulty": "normal",
+  "ai_enabled": true,
+  "worm_enabled": false,
+  "starting_credits": 150,
+  "briefing": {
+    "advisor": "Flame-Speaker Vey",
+    "text": "Wear Ashveil colours. Strike the Aureate camp before their armour rolls. Flame and trikes — hit hard, do not linger. The Yard is still your heart."
+  },
+  "objectives": [
+    {
+      "id": "destroy_camp",
+      "type": "destroy",
+      "group": "enemy_camp",
+      "count": 1,
+      "required": true,
+      "label": "Destroy the Aureate camp"
+    }
+  ],
+  "fail_conditions": [
+    {
+      "id": "lose_conyard",
+      "type": "building_lost",
+      "building_id": "b_conyard",
+      "team": "player",
+      "label": "Construction Yard destroyed"
+    }
+  ],
+  "win_text": "Victory — The camp burns. Ashveil smiles.",
+  "lose_text": "Defeat — Construction Yard lost."
+}

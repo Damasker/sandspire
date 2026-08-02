@@ -1,0 +1,15 @@
+{
+  "id": "b_factory",
+  "name": "Vehicle Factory",
+  "faction": "shared",
+  "cost": 400,
+  "power": -30,
+  "prereq": "b_refinery",
+  "footprint": [3, 2],
+  "hp": 700,
+  "armor": "medium",
+  "vision_tiles": 5,
+  "color": [0.5, 0.38, 0.28],
+  "produces": ["u_trike", "u_quad", "u_tank", "u_siege", "u_msa"],
+  "role": "vehicles"
+}

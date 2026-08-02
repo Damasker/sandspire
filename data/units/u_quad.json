@@ -1,0 +1,18 @@
+{
+  "id": "u_quad",
+  "name": "Assault Quad",
+  "faction": "aureate",
+  "label": "QAD",
+  "cost": 200,
+  "built_at": "b_factory",
+  "hp": 180,
+  "armor": "light",
+  "dps": 18,
+  "range": "med",
+  "speed": 150,
+  "build_time": 4.0,
+  "vision_tiles": 6,
+  "radius": 13,
+  "color": [0.45, 0.55, 0.95],
+  "role": "generalist"
+}

@@ -1,0 +1,18 @@
+{
+  "id": "ash_infantry",
+  "name": "Ash Raider",
+  "faction": "ashveil",
+  "label": "ARD",
+  "cost": 40,
+  "built_at": "b_barracks",
+  "hp": 55,
+  "armor": "light",
+  "dps": 9,
+  "range": "short",
+  "speed": 115,
+  "build_time": 2.0,
+  "vision_tiles": 5,
+  "radius": 8,
+  "color": [0.85, 0.4, 0.25],
+  "role": "cheap aggressive infantry"
+}

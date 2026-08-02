@@ -1,0 +1,18 @@
+{
+  "id": "u_trooper_h",
+  "name": "Heavy Trooper",
+  "faction": "aureate",
+  "label": "HVY",
+  "cost": 100,
+  "built_at": "b_barracks",
+  "hp": 90,
+  "armor": "light",
+  "dps": 14,
+  "range": "med",
+  "speed": 90,
+  "build_time": 3.5,
+  "vision_tiles": 5,
+  "radius": 10,
+  "color": [0.25, 0.58, 0.38],
+  "role": "anti-light vehicle"
+}

@@ -1,0 +1,21 @@
+{
+  "id": "ash_harvester",
+  "name": "Ash Harvester",
+  "faction": "ashveil",
+  "label": "AHV",
+  "cost": 0,
+  "built_at": "b_refinery",
+  "hp": 380,
+  "armor": "medium",
+  "dps": 0,
+  "range": "none",
+  "speed": 130,
+  "build_time": 3.5,
+  "cargo_capacity": 90,
+  "harvest_rate": 55,
+  "unload_rate": 110,
+  "vision_tiles": 4,
+  "radius": 15,
+  "color": [0.95, 0.55, 0.2],
+  "role": "economy; free with refinery"
+}

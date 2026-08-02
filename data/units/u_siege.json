@@ -1,0 +1,18 @@
+{
+  "id": "u_siege",
+  "name": "Siege Tank",
+  "faction": "aureate",
+  "label": "SG",
+  "cost": 450,
+  "built_at": "b_factory",
+  "hp": 280,
+  "armor": "medium",
+  "dps": 36,
+  "range": "long",
+  "speed": 85,
+  "build_time": 6.5,
+  "vision_tiles": 5,
+  "radius": 16,
+  "color": [0.4, 0.35, 0.55],
+  "role": "anti-building"
+}

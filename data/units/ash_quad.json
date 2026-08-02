@@ -1,0 +1,18 @@
+{
+  "id": "ash_quad",
+  "name": "Ash Quad",
+  "faction": "ashveil",
+  "label": "AQD",
+  "cost": 170,
+  "built_at": "b_factory",
+  "hp": 160,
+  "armor": "light",
+  "dps": 20,
+  "range": "med",
+  "speed": 165,
+  "build_time": 3.5,
+  "vision_tiles": 6,
+  "radius": 12,
+  "color": [0.8, 0.4, 0.35],
+  "role": "raid generalist"
+}

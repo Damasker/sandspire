@@ -1,0 +1,13 @@
+{
+  "id": "b_conyard",
+  "name": "Construction Yard",
+  "cost": 0,
+  "power": 0,
+  "prereq": null,
+  "footprint": [3, 3],
+  "hp": 1500,
+  "armor": "heavy",
+  "vision_tiles": 7,
+  "color": [0.35, 0.45, 0.55],
+  "role": "builds structures"
+}

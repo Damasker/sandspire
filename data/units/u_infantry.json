@@ -1,0 +1,18 @@
+{
+  "id": "u_infantry",
+  "name": "Trooper",
+  "faction": "aureate",
+  "label": "TRP",
+  "cost": 50,
+  "built_at": "b_barracks",
+  "hp": 60,
+  "armor": "light",
+  "dps": 8,
+  "range": "short",
+  "speed": 100,
+  "build_time": 2.5,
+  "vision_tiles": 5,
+  "radius": 8,
+  "color": [0.35, 0.72, 0.42],
+  "role": "cheap anti-infantry"
+}

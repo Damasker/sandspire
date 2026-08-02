@@ -1,0 +1,13 @@
+{
+  "id": "b_radar",
+  "name": "Outpost",
+  "cost": 300,
+  "power": -20,
+  "prereq": "b_factory",
+  "footprint": [2, 2],
+  "hp": 450,
+  "armor": "light",
+  "vision_tiles": 14,
+  "color": [0.35, 0.55, 0.65],
+  "role": "radar / large vision"
+}

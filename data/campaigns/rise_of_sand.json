@@ -1,0 +1,14 @@
+{
+  "id": "rise_of_sand",
+  "title": "Rise of Sand",
+  "description": "Aureate Mentat Kael guides a short desert campaign — harvest, hold, and break rival houses.",
+  "missions": [
+    "m01_first_blood",
+    "m02_spice_run",
+    "m03_hold_the_line",
+    "m04_ash_raid",
+    "m05_coil_wall",
+    "m06_dune_hunger",
+    "m07_throne_of_sand"
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "id": "m06_dune_hunger",
+  "title": "Dune Hunger",
+  "campaign_index": 6,
+  "map": {
+    "scene": "res://scenes/main.tscn",
+    "params": {
+      "variant": "worm_march",
+      "map_seed": 66252,
+      "enemy_force": "standard",
+      "player_force": "standard"
+    }
+  },
+  "player_faction": "coilward",
+  "enemy_faction": "ashveil",
+  "difficulty": "normal",
+  "ai_enabled": true,
+  "worm_enabled": true,
+  "starting_credits": 400,
+  "briefing": {
+    "advisor": "Warden Orth",
+    "text": "Coilward holds the rock — the worm hunts the sand. Survive seventy-five seconds. Keep harvesters noisy only when you must; stay on stone when the dunes shiver."
+  },
+  "objectives": [
+    {
+      "id": "survive_worm",
+      "type": "survive",
+      "seconds": 75,
+      "required": true,
+      "label": "Survive 75 seconds"
+    }
+  ],
+  "fail_conditions": [
+    {
+      "id": "lose_conyard",
+      "type": "building_lost",
+      "building_id": "b_conyard",
+      "team": "player",
+      "label": "Construction Yard destroyed"
+    }
+  ],
+  "win_text": "Victory — The hunger passes.",
+  "lose_text": "Defeat — Construction Yard lost."
+}

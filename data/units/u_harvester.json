@@ -1,0 +1,21 @@
+{
+  "id": "u_harvester",
+  "name": "Spice Harvester",
+  "faction": "aureate",
+  "label": "HV",
+  "cost": 0,
+  "built_at": "b_refinery",
+  "hp": 400,
+  "armor": "medium",
+  "dps": 0,
+  "range": "none",
+  "speed": 120,
+  "build_time": 4.0,
+  "cargo_capacity": 100,
+  "harvest_rate": 50,
+  "unload_rate": 100,
+  "vision_tiles": 4,
+  "radius": 16,
+  "color": [0.9, 0.75, 0.2],
+  "role": "economy; free with refinery"
+}

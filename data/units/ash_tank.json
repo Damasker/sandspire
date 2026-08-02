@@ -1,0 +1,18 @@
+{
+  "id": "ash_tank",
+  "name": "Ash Tank",
+  "faction": "ashveil",
+  "label": "ATN",
+  "cost": 280,
+  "built_at": "b_factory",
+  "hp": 280,
+  "armor": "medium",
+  "dps": 24,
+  "range": "med",
+  "speed": 120,
+  "build_time": 4.5,
+  "vision_tiles": 5,
+  "radius": 14,
+  "color": [0.65, 0.32, 0.28],
+  "role": "weaker frontline tank"
+}

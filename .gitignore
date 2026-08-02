@@ -1,0 +1,32 @@
+# Godot 4
+.godot/
+*.translation
+export.cfg
+
+# Imported / caches
+.import/
+*.import.bak
+
+# OS / editor junk
+.DS_Store
+Thumbs.db
+*.swp
+*~
+*.tmp
+
+# Export artifacts (binaries — do not commit)
+build/
+dist/
+*.pck
+*.exe
+*.x86_64
+*.app
+*.tpz
+*.dmg
+*.zip
+!docs/**
+
+# Local overrides
+.env
+.env.*
+*.local

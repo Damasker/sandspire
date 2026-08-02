@@ -1,0 +1,44 @@
+{
+  "id": "m03_hold_the_line",
+  "title": "Hold the Line",
+  "campaign_index": 3,
+  "map": {
+    "scene": "res://scenes/main.tscn",
+    "params": {
+      "variant": "west_wall",
+      "map_seed": 33126,
+      "enemy_force": "standard",
+      "player_force": "standard"
+    }
+  },
+  "player_faction": "aureate",
+  "enemy_faction": "ashveil",
+  "difficulty": "normal",
+  "ai_enabled": true,
+  "worm_enabled": false,
+  "starting_credits": 500,
+  "briefing": {
+    "advisor": "Mentat Kael",
+    "text": "Ashveil probes the perimeter. Survive ninety seconds. Spend the reserve on turrets or tanks — whatever keeps the Construction Yard alive until the chronometer clears."
+  },
+  "objectives": [
+    {
+      "id": "survive_wave",
+      "type": "survive",
+      "seconds": 90,
+      "required": true,
+      "label": "Survive 90 seconds"
+    }
+  ],
+  "fail_conditions": [
+    {
+      "id": "lose_conyard",
+      "type": "building_lost",
+      "building_id": "b_conyard",
+      "team": "player",
+      "label": "Construction Yard destroyed"
+    }
+  ],
+  "win_text": "Victory — Line held. The raiders break off.",
+  "lose_text": "Defeat — Construction Yard lost."
+}

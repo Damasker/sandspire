@@ -1,0 +1,46 @@
+{
+  "id": "m07_throne_of_sand",
+  "title": "Throne of Sand",
+  "campaign_index": 7,
+  "map": {
+    "scene": "res://scenes/main.tscn",
+    "params": {
+      "variant": "finale_basin",
+      "map_seed": 77300,
+      "enemy_force": "heavy",
+      "player_force": "siege",
+      "tag_enemy_base": true
+    }
+  },
+  "player_faction": "aureate",
+  "enemy_faction": "ashveil",
+  "difficulty": "hard",
+  "ai_enabled": true,
+  "worm_enabled": true,
+  "starting_credits": 600,
+  "briefing": {
+    "advisor": "Mentat Kael",
+    "text": "Finale: erase the Ashveil base — camp and Construction Yard both. Siege guns and MSA if you can field them. The worm and their waves will not wait. Hold your own Yard until the throne is ash."
+  },
+  "objectives": [
+    {
+      "id": "destroy_base",
+      "type": "destroy",
+      "group": "enemy_base",
+      "count": 1,
+      "required": true,
+      "label": "Destroy the enemy base (camp + ConYard)"
+    }
+  ],
+  "fail_conditions": [
+    {
+      "id": "lose_conyard",
+      "type": "building_lost",
+      "building_id": "b_conyard",
+      "team": "player",
+      "label": "Construction Yard destroyed"
+    }
+  ],
+  "win_text": "Victory — Throne of sand claimed. Campaign complete.",
+  "lose_text": "Defeat — Construction Yard lost."
+}

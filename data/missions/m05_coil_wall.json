@@ -1,0 +1,52 @@
+{
+  "id": "m05_coil_wall",
+  "title": "Coil Wall",
+  "campaign_index": 5,
+  "map": {
+    "scene": "res://scenes/main.tscn",
+    "params": {
+      "variant": "fortress_approach",
+      "map_seed": 55210,
+      "enemy_force": "heavy",
+      "player_force": "standard"
+    }
+  },
+  "player_faction": "aureate",
+  "enemy_faction": "coilward",
+  "difficulty": "normal",
+  "ai_enabled": true,
+  "worm_enabled": false,
+  "starting_credits": 350,
+  "briefing": {
+    "advisor": "Mentat Kael",
+    "text": "Coilward digs in — slow factories, hard turrets. Stockpile 200 credits, then crack their camp. Expect denser pickets on the eastern rock."
+  },
+  "objectives": [
+    {
+      "id": "harvest_siege",
+      "type": "harvest",
+      "amount": 200,
+      "required": true,
+      "label": "Harvest 200 credits"
+    },
+    {
+      "id": "destroy_camp",
+      "type": "destroy",
+      "group": "enemy_camp",
+      "count": 1,
+      "required": true,
+      "label": "Destroy the Coilward camp"
+    }
+  ],
+  "fail_conditions": [
+    {
+      "id": "lose_conyard",
+      "type": "building_lost",
+      "building_id": "b_conyard",
+      "team": "player",
+      "label": "Construction Yard destroyed"
+    }
+  ],
+  "win_text": "Victory — The wall cracks.",
+  "lose_text": "Defeat — Construction Yard lost."
+}

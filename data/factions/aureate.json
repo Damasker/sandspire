@@ -1,0 +1,23 @@
+{
+  "id": "aureate",
+  "name": "House Aureate",
+  "short_name": "Aureate",
+  "accent": [0.86, 0.68, 0.22],
+  "panel": [0.12, 0.1, 0.08, 0.88],
+  "blurb": "Desert baseline house — balanced infantry and armour.",
+  "signature": "Reliable Battle Tank line (siege + MSA unlocks)",
+  "roles": {
+    "infantry": "u_infantry",
+    "heavy": "u_trooper_h",
+    "harvester": "u_harvester",
+    "trike": "u_trike",
+    "quad": "u_quad",
+    "tank": "u_tank"
+  },
+  "produces": {
+    "b_barracks": ["u_infantry", "u_trooper_h"],
+    "b_factory": ["u_trike", "u_quad", "u_tank", "u_siege", "u_msa"],
+    "b_refinery": ["u_harvester"]
+  },
+  "ai_units": ["u_infantry", "u_quad", "u_tank"]
+}

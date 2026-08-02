@@ -1,0 +1,13 @@
+{
+  "id": "b_power",
+  "name": "Windtrap",
+  "cost": 300,
+  "power": 100,
+  "prereq": "b_conyard",
+  "footprint": [2, 2],
+  "hp": 400,
+  "armor": "light",
+  "vision_tiles": 4,
+  "color": [0.45, 0.65, 0.85],
+  "role": "power"
+}

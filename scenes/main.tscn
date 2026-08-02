@@ -1,0 +1,488 @@
+[gd_scene load_steps=24 format=3 uid="uid://sandspiremain001"]
+
+[ext_resource type="Script" path="res://scripts/main.gd" id="1_main"]
+[ext_resource type="Script" path="res://scripts/world_map.gd" id="2_map"]
+[ext_resource type="Script" path="res://scripts/rts_camera.gd" id="3_cam"]
+[ext_resource type="Script" path="res://scripts/selection_controller.gd" id="4_sel"]
+[ext_resource type="Script" path="res://scripts/economy.gd" id="5_eco"]
+[ext_resource type="Script" path="res://scripts/build_controller.gd" id="6_bc"]
+[ext_resource type="Script" path="res://scripts/build_menu.gd" id="7_menu"]
+[ext_resource type="Script" path="res://scripts/mission.gd" id="8_mission"]
+[ext_resource type="Script" path="res://scripts/power_grid.gd" id="9_power"]
+[ext_resource type="Script" path="res://scripts/vision_system.gd" id="10_vis"]
+[ext_resource type="Script" path="res://scripts/fog_overlay.gd" id="11_fog"]
+[ext_resource type="Script" path="res://scripts/minimap.gd" id="12_mini"]
+[ext_resource type="Script" path="res://scripts/pathfinder.gd" id="13_path"]
+[ext_resource type="Script" path="res://scripts/ai_controller.gd" id="14_ai"]
+[ext_resource type="Script" path="res://scripts/skirmish_config.gd" id="15_sk"]
+[ext_resource type="Script" path="res://scripts/sandworm.gd" id="16_worm"]
+[ext_resource type="Script" path="res://scripts/combat_telemetry.gd" id="17_tel"]
+[ext_resource type="Script" path="res://scripts/save_game.gd" id="18_save"]
+[ext_resource type="Script" path="res://scripts/advisor_panel.gd" id="19_adv"]
+[ext_resource type="Script" path="res://scripts/game_options.gd" id="20_opt"]
+[ext_resource type="Script" path="res://scripts/sfx_bus.gd" id="21_sfx"]
+[ext_resource type="Script" path="res://scripts/help_overlay.gd" id="22_help"]
+[ext_resource type="Script" path="res://scripts/options_panel.gd" id="23_opanel"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_main")
+
+[node name="SkirmishConfig" type="Node" parent="."]
+script = ExtResource("15_sk")
+
+[node name="Economy" type="Node" parent="."]
+script = ExtResource("5_eco")
+
+[node name="EnemyEconomy" type="Node" parent="."]
+script = ExtResource("5_eco")
+team = 1
+
+[node name="PowerGrid" type="Node" parent="."]
+script = ExtResource("9_power")
+
+[node name="EnemyPowerGrid" type="Node" parent="."]
+script = ExtResource("9_power")
+team = 1
+
+[node name="VisionSystem" type="Node" parent="."]
+script = ExtResource("10_vis")
+
+[node name="Pathfinder" type="Node" parent="."]
+script = ExtResource("13_path")
+
+[node name="AiController" type="Node" parent="."]
+script = ExtResource("14_ai")
+faction_id = "ashveil"
+
+[node name="CombatTelemetry" type="Node" parent="."]
+script = ExtResource("17_tel")
+
+[node name="SaveGame" type="Node" parent="."]
+script = ExtResource("18_save")
+
+[node name="GameOptions" type="Node" parent="."]
+script = ExtResource("20_opt")
+
+[node name="SfxBus" type="Node" parent="."]
+script = ExtResource("21_sfx")
+
+[node name="Mission" type="Node" parent="."]
+script = ExtResource("8_mission")
+
+[node name="WorldMap" type="Node2D" parent="."]
+script = ExtResource("2_map")
+
+[node name="Sandworm" type="Node2D" parent="."]
+z_index = 30
+script = ExtResource("16_worm")
+
+[node name="Buildings" type="Node2D" parent="."]
+z_index = 1
+
+[node name="Units" type="Node2D" parent="."]
+z_index = 2
+
+[node name="FogOverlay" type="Node2D" parent="."]
+z_index = 40
+script = ExtResource("11_fog")
+vision_path = NodePath("../VisionSystem")
+
+[node name="RtsCamera" type="Camera2D" parent="."]
+position = Vector2(560, 560)
+zoom = Vector2(1, 1)
+script = ExtResource("3_cam")
+
+[node name="BuildController" type="Node2D" parent="."]
+z_index = 80
+script = ExtResource("6_bc")
+world_map_path = NodePath("../WorldMap")
+buildings_root_path = NodePath("../Buildings")
+economy_path = NodePath("../Economy")
+power_grid_path = NodePath("../PowerGrid")
+
+[node name="SelectionController" type="Node2D" parent="."]
+z_index = 50
+script = ExtResource("4_sel")
+units_root_path = NodePath("../Units")
+buildings_root_path = NodePath("../Buildings")
+camera_path = NodePath("../RtsCamera")
+build_controller_path = NodePath("../BuildController")
+vision_path = NodePath("../VisionSystem")
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="Panel" type="ColorRect" parent="HUD"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 36.0
+grow_horizontal = 2
+color = Color(0.08, 0.08, 0.1, 0.75)
+mouse_filter = 2
+
+[node name="Status" type="Label" parent="HUD"]
+offset_left = 12.0
+offset_top = 8.0
+offset_right = 620.0
+offset_bottom = 32.0
+theme_override_colors/font_color = Color(0.95, 0.92, 0.85, 1)
+text = "Sandspire"
+
+[node name="Power" type="Label" parent="HUD"]
+offset_left = 640.0
+offset_top = 8.0
+offset_right = 920.0
+offset_bottom = 32.0
+theme_override_colors/font_color = Color(0.75, 0.95, 1, 1)
+text = "Power: 0"
+
+[node name="Army" type="Label" parent="HUD"]
+offset_left = 930.0
+offset_top = 8.0
+offset_right = 1180.0
+offset_bottom = 32.0
+theme_override_colors/font_color = Color(0.85, 0.9, 0.75, 1)
+text = "Army P:0/0  E:0/0"
+
+[node name="Credits" type="Label" parent="HUD"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -220.0
+offset_top = 8.0
+offset_right = -12.0
+offset_bottom = 32.0
+grow_horizontal = 0
+theme_override_colors/font_color = Color(0.95, 0.85, 0.35, 1)
+horizontal_alignment = 2
+text = "Credits: 0"
+
+[node name="Victory" type="Label" parent="HUD"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -280.0
+offset_top = -24.0
+offset_right = 280.0
+offset_bottom = 24.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0.92, 0.35, 1)
+horizontal_alignment = 1
+text = "Victory"
+
+[node name="Defeat" type="Label" parent="HUD"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -280.0
+offset_top = -24.0
+offset_right = 280.0
+offset_bottom = 24.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0.35, 0.3, 1)
+horizontal_alignment = 1
+text = "Defeat"
+
+[node name="Objectives" type="Label" parent="HUD"]
+offset_left = 12.0
+offset_top = 40.0
+offset_right = 420.0
+offset_bottom = 120.0
+theme_override_colors/font_color = Color(0.9, 0.88, 0.78, 0.95)
+text = "Objectives"
+
+[node name="HelpHint" type="Label" parent="HUD"]
+offset_left = 12.0
+offset_top = 122.0
+offset_right = 480.0
+offset_bottom = 146.0
+theme_override_colors/font_color = Color(0.7, 0.65, 0.55, 0.9)
+theme_override_font_sizes/font_size = 12
+text = "? / F1 help   O options   B advisor"
+
+[node name="AdvisorPanel" type="Control" parent="HUD"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+script = ExtResource("19_adv")
+
+[node name="Backdrop" type="ColorRect" parent="HUD/AdvisorPanel"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.05, 0.04, 0.03, 0.72)
+
+[node name="Panel" type="ColorRect" parent="HUD/AdvisorPanel"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -320.0
+offset_top = -200.0
+offset_right = 320.0
+offset_bottom = 200.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.14, 0.11, 0.08, 0.96)
+
+[node name="Title" type="Label" parent="HUD/AdvisorPanel/Panel"]
+offset_left = 24.0
+offset_top = 20.0
+offset_right = 616.0
+offset_bottom = 48.0
+theme_override_colors/font_color = Color(0.95, 0.85, 0.45, 1)
+theme_override_font_sizes/font_size = 22
+text = "Mission"
+
+[node name="Advisor" type="Label" parent="HUD/AdvisorPanel/Panel"]
+offset_left = 24.0
+offset_top = 52.0
+offset_right = 616.0
+offset_bottom = 76.0
+theme_override_colors/font_color = Color(0.75, 0.9, 0.85, 1)
+text = "Advisor"
+
+[node name="Body" type="Label" parent="HUD/AdvisorPanel/Panel"]
+offset_left = 24.0
+offset_top = 88.0
+offset_right = 616.0
+offset_bottom = 220.0
+theme_override_colors/font_color = Color(0.92, 0.9, 0.84, 1)
+autowrap_mode = 3
+text = "Briefing"
+
+[node name="Objectives" type="Label" parent="HUD/AdvisorPanel/Panel"]
+offset_left = 24.0
+offset_top = 228.0
+offset_right = 616.0
+offset_bottom = 320.0
+theme_override_colors/font_color = Color(0.85, 0.8, 0.65, 1)
+autowrap_mode = 3
+text = "Objectives"
+
+[node name="Hint" type="Label" parent="HUD/AdvisorPanel/Panel"]
+offset_left = 24.0
+offset_top = 340.0
+offset_right = 616.0
+offset_bottom = 368.0
+theme_override_colors/font_color = Color(0.65, 0.6, 0.5, 1)
+text = "Continue"
+
+[node name="HelpOverlay" type="Control" parent="HUD"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+script = ExtResource("22_help")
+
+[node name="Panel" type="ColorRect" parent="HUD/HelpOverlay"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -280.0
+offset_top = -220.0
+offset_right = 280.0
+offset_bottom = 220.0
+color = Color(0.1, 0.09, 0.08, 0.96)
+
+[node name="Title" type="Label" parent="HUD/HelpOverlay/Panel"]
+offset_left = 20.0
+offset_top = 16.0
+offset_right = 540.0
+offset_bottom = 44.0
+theme_override_colors/font_color = Color(0.95, 0.85, 0.45, 1)
+theme_override_font_sizes/font_size = 22
+text = "Hotkeys"
+
+[node name="Body" type="Label" parent="HUD/HelpOverlay/Panel"]
+offset_left = 20.0
+offset_top = 52.0
+offset_right = 540.0
+offset_bottom = 380.0
+theme_override_colors/font_color = Color(0.9, 0.88, 0.8, 1)
+autowrap_mode = 3
+text = "Help"
+
+[node name="Hint" type="Label" parent="HUD/HelpOverlay/Panel"]
+offset_left = 20.0
+offset_top = 390.0
+offset_right = 540.0
+offset_bottom = 420.0
+theme_override_colors/font_color = Color(0.65, 0.6, 0.5, 1)
+text = "Close"
+
+[node name="OptionsPanel" type="Control" parent="HUD"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+script = ExtResource("23_opanel")
+
+[node name="Panel" type="ColorRect" parent="HUD/OptionsPanel"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -240.0
+offset_top = -230.0
+offset_right = 240.0
+offset_bottom = 230.0
+color = Color(0.12, 0.1, 0.08, 0.97)
+
+[node name="Title" type="Label" parent="HUD/OptionsPanel/Panel"]
+offset_left = 20.0
+offset_top = 12.0
+offset_right = 460.0
+offset_bottom = 40.0
+theme_override_colors/font_color = Color(0.95, 0.85, 0.45, 1)
+theme_override_font_sizes/font_size = 20
+text = "Options"
+
+[node name="LblScroll" type="Label" parent="HUD/OptionsPanel/Panel"]
+offset_left = 20.0
+offset_top = 48.0
+offset_right = 460.0
+offset_bottom = 68.0
+text = "Scroll speed"
+
+[node name="ScrollSpeed" type="HSlider" parent="HUD/OptionsPanel/Panel"]
+offset_left = 20.0
+offset_top = 70.0
+offset_right = 460.0
+offset_bottom = 86.0
+min_value = 200.0
+max_value = 1400.0
+step = 50.0
+value = 600.0
+
+[node name="EdgeScroll" type="CheckButton" parent="HUD/OptionsPanel/Panel"]
+offset_left = 20.0
+offset_top = 96.0
+offset_right = 460.0
+offset_bottom = 128.0
+button_pressed = true
+text = "Edge scroll"
+
+[node name="LblMaster" type="Label" parent="HUD/OptionsPanel/Panel"]
+offset_left = 20.0
+offset_top = 136.0
+offset_right = 460.0
+offset_bottom = 156.0
+text = "Master volume"
+
+[node name="MasterVolume" type="HSlider" parent="HUD/OptionsPanel/Panel"]
+offset_left = 20.0
+offset_top = 158.0
+offset_right = 460.0
+offset_bottom = 174.0
+value = 80.0
+
+[node name="LblSfx" type="Label" parent="HUD/OptionsPanel/Panel"]
+offset_left = 20.0
+offset_top = 184.0
+offset_right = 460.0
+offset_bottom = 204.0
+text = "SFX volume"
+
+[node name="SfxVolume" type="HSlider" parent="HUD/OptionsPanel/Panel"]
+offset_left = 20.0
+offset_top = 206.0
+offset_right = 460.0
+offset_bottom = 222.0
+value = 70.0
+
+[node name="LblScale" type="Label" parent="HUD/OptionsPanel/Panel"]
+offset_left = 20.0
+offset_top = 232.0
+offset_right = 460.0
+offset_bottom = 252.0
+text = "UI font scale"
+
+[node name="UiScale" type="HSlider" parent="HUD/OptionsPanel/Panel"]
+offset_left = 20.0
+offset_top = 254.0
+offset_right = 460.0
+offset_bottom = 270.0
+min_value = 85.0
+max_value = 150.0
+step = 5.0
+value = 100.0
+
+[node name="LblLang" type="Label" parent="HUD/OptionsPanel/Panel"]
+offset_left = 20.0
+offset_top = 280.0
+offset_right = 460.0
+offset_bottom = 300.0
+text = "Language"
+
+[node name="Locale" type="OptionButton" parent="HUD/OptionsPanel/Panel"]
+offset_left = 20.0
+offset_top = 304.0
+offset_right = 460.0
+offset_bottom = 336.0
+
+[node name="Apply" type="Button" parent="HUD/OptionsPanel/Panel"]
+offset_left = 20.0
+offset_top = 360.0
+offset_right = 180.0
+offset_bottom = 396.0
+text = "Apply"
+
+[node name="CloseBtn" type="Button" parent="HUD/OptionsPanel/Panel"]
+offset_left = 200.0
+offset_top = 360.0
+offset_right = 360.0
+offset_bottom = 396.0
+text = "Close"
+
+[node name="Minimap" type="Control" parent="HUD"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = -155.0
+offset_right = 192.0
+offset_bottom = -12.0
+grow_vertical = 0
+script = ExtResource("12_mini")
+world_map_path = NodePath("../../WorldMap")
+vision_path = NodePath("../../VisionSystem")
+camera_path = NodePath("../../RtsCamera")
+units_root_path = NodePath("../../Units")
+buildings_root_path = NodePath("../../Buildings")
+
+[node name="BuildMenu" type="Control" parent="HUD"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("7_menu")
+build_controller_path = NodePath("../../BuildController")
+selection_path = NodePath("../../SelectionController")
+economy_path = NodePath("../../Economy")
+power_grid_path = NodePath("../../PowerGrid")

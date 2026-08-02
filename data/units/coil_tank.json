@@ -1,0 +1,18 @@
+{
+  "id": "coil_tank",
+  "name": "Coil Fortress Tank",
+  "faction": "coilward",
+  "label": "CFT",
+  "cost": 340,
+  "built_at": "b_factory",
+  "hp": 420,
+  "armor": "heavy",
+  "dps": 26,
+  "range": "med",
+  "speed": 95,
+  "build_time": 6.5,
+  "vision_tiles": 5,
+  "radius": 16,
+  "color": [0.2, 0.5, 0.6],
+  "role": "slow heavy frontline"
+}

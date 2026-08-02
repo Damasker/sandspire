@@ -1,0 +1,52 @@
+{
+  "id": "m02_spice_run",
+  "title": "Spice Run",
+  "campaign_index": 2,
+  "map": {
+    "scene": "res://scenes/main.tscn",
+    "params": {
+      "variant": "bloom_basin",
+      "map_seed": 22084,
+      "enemy_force": "light",
+      "player_force": "standard"
+    }
+  },
+  "player_faction": "aureate",
+  "enemy_faction": "ashveil",
+  "difficulty": "easy",
+  "ai_enabled": false,
+  "worm_enabled": false,
+  "starting_credits": 0,
+  "briefing": {
+    "advisor": "Mentat Kael",
+    "text": "The Guild wants tonnage, not trophies. Fill the coffers — harvest 300 spice credits. A rival camp watches the basin; ignore it if you must, but do not lose the Yard."
+  },
+  "objectives": [
+    {
+      "id": "harvest_quota",
+      "type": "harvest",
+      "amount": 300,
+      "required": true,
+      "label": "Harvest 300 spice credits"
+    },
+    {
+      "id": "destroy_camp",
+      "type": "destroy",
+      "group": "enemy_camp",
+      "count": 1,
+      "required": false,
+      "label": "Destroy the watching camp (optional)"
+    }
+  ],
+  "fail_conditions": [
+    {
+      "id": "lose_conyard",
+      "type": "building_lost",
+      "building_id": "b_conyard",
+      "team": "player",
+      "label": "Construction Yard destroyed"
+    }
+  ],
+  "win_text": "Victory — Quota met. The spice flows.",
+  "lose_text": "Defeat — Construction Yard lost."
+}

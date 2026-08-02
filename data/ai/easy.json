@@ -1,0 +1,11 @@
+{
+  "id": "easy",
+  "name": "Easy",
+  "starting_credits": 250,
+  "notes": "Weaker opener and slower waves. No unit/stat cheats — only economy timing.",
+  "think_interval": 1.25,
+  "wave_min_army": 4,
+  "wave_cooldown": 55.0,
+  "max_harvesters": 1,
+  "prefer_factory": true
+}

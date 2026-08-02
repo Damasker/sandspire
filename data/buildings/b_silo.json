@@ -1,0 +1,15 @@
+{
+  "id": "b_silo",
+  "name": "Spice Silo",
+  "faction": "shared",
+  "cost": 150,
+  "power": -5,
+  "prereq": "b_refinery",
+  "footprint": [2, 2],
+  "hp": 300,
+  "armor": "light",
+  "vision_tiles": 3,
+  "color": [0.65, 0.55, 0.25],
+  "credit_bonus": 500,
+  "role": "credit capacity buffer"
+}

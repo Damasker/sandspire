@@ -1,0 +1,11 @@
+{
+  "id": "hard",
+  "name": "Hard",
+  "starting_credits": 900,
+  "notes": "Faster thinks and earlier waves. Start-credit boost only — no DPS/HP multipliers.",
+  "think_interval": 0.45,
+  "wave_min_army": 2,
+  "wave_cooldown": 22.0,
+  "max_harvesters": 3,
+  "prefer_factory": true
+}

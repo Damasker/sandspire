@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://sandspirebldg001"]
+
+[ext_resource type="Script" path="res://scripts/building.gd" id="1_bldg"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
+size = Vector2(96, 64)
+
+[node name="Building" type="StaticBody2D"]
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("1_bldg")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(48, 32)
+shape = SubResource("RectangleShape2D_1")

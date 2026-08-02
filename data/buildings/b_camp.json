@@ -1,0 +1,12 @@
+{
+  "id": "b_camp",
+  "name": "Enemy Outpost",
+  "cost": 0,
+  "power": 0,
+  "prereq": null,
+  "footprint": [2, 2],
+  "hp": 280,
+  "armor": "medium",
+  "color": [0.7, 0.22, 0.18],
+  "role": "M1 objective"
+}

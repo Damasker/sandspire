@@ -1,0 +1,19 @@
+{
+  "id": "coil_air",
+  "name": "Ornithopter",
+  "faction": "coilward",
+  "label": "ORN",
+  "cost": 375,
+  "built_at": "b_radar",
+  "hp": 130,
+  "armor": "light",
+  "dps": 16,
+  "range": "med",
+  "speed": 190,
+  "build_time": 5.5,
+  "vision_tiles": 9,
+  "radius": 12,
+  "color": [0.45, 0.85, 0.9],
+  "flying": true,
+  "role": "light air — ignores ground path blocks"
+}

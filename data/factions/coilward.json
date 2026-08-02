@@ -1,0 +1,36 @@
+{
+  "id": "coilward",
+  "name": "House Coilward",
+  "short_name": "Coilward",
+  "accent": [0.35, 0.7, 0.75],
+  "panel": [0.06, 0.1, 0.12, 0.9],
+  "blurb": "Defensive tech — strong turrets, slow factory, heavy armour, light air from Outpost.",
+  "signature": "Fortress turrets + Ornithopter air unlocked at Outpost",
+  "roles": {
+    "infantry": "coil_infantry",
+    "heavy": "coil_guard",
+    "harvester": "coil_harvester",
+    "trike": "coil_trike",
+    "quad": "coil_quad",
+    "tank": "coil_tank",
+    "air": "coil_air"
+  },
+  "produces": {
+    "b_barracks": ["coil_infantry", "coil_guard"],
+    "b_factory": ["coil_trike", "coil_quad", "coil_tank"],
+    "b_refinery": ["coil_harvester"],
+    "b_radar": ["coil_air"]
+  },
+  "building_mods": {
+    "b_turret": {
+      "hp": 520,
+      "dps": 32,
+      "range_px": 210,
+      "armor": "heavy"
+    },
+    "b_factory": {
+      "prod_rate_mult": 0.65
+    }
+  },
+  "ai_units": ["coil_infantry", "coil_quad", "coil_tank"]
+}

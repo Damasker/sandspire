@@ -1,0 +1,11 @@
+{
+  "id": "normal",
+  "name": "Normal",
+  "starting_credits": 500,
+  "notes": "Polished default. Seed CY+Windtrap +500 start (~refinery scrap). Same unit costs/build times as player.",
+  "think_interval": 0.8,
+  "wave_min_army": 3,
+  "wave_cooldown": 40.0,
+  "max_harvesters": 2,
+  "prefer_factory": true
+}

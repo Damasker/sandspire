@@ -1,0 +1,29 @@
+; Engine configuration file.
+; Sandspire — desert RTS (Godot 4)
+config_version=5
+
+[application]
+
+config/name="Sandspire"
+config/description="Desert RTS — harvest spice, build base, conquer."
+config/version="0.4.0"
+run/main_scene="res://scenes/main_menu.tscn"
+config/features=PackedStringArray("4.7", "Forward Plus")
+config/icon="res://icon.svg"
+
+[display]
+
+window/size/viewport_width=1280
+window/size/viewport_height=720
+window/stretch/mode="canvas_items"
+
+[layer_names]
+
+2d_physics/layer_1="units"
+2d_physics/layer_2="buildings"
+2d_physics/layer_3="terrain"
+
+[rendering]
+
+textures/canvas_textures/default_texture_filter=0
+environment/defaults/default_clear_color=Color(0.55, 0.42, 0.22, 1)

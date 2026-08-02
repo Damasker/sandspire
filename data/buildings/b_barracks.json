@@ -1,0 +1,15 @@
+{
+  "id": "b_barracks",
+  "name": "Barracks",
+  "faction": "shared",
+  "cost": 250,
+  "power": -20,
+  "prereq": "b_power",
+  "footprint": [2, 2],
+  "hp": 600,
+  "armor": "medium",
+  "vision_tiles": 5,
+  "color": [0.42, 0.52, 0.32],
+  "produces": ["u_infantry", "u_trooper_h"],
+  "role": "infantry"
+}
