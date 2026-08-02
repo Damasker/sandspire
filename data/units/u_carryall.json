@@ -1,0 +1,22 @@
+{
+  "id": "u_carryall",
+  "name": "Carryall",
+  "faction": "shared",
+  "label": "CRY",
+  "cost": 400,
+  "built_at": "b_radar",
+  "hp": 200,
+  "armor": "light",
+  "dps": 0,
+  "range": "none",
+  "speed": 210,
+  "build_time": 6.0,
+  "vision_tiles": 8,
+  "radius": 16,
+  "color": [0.75, 0.7, 0.45],
+  "flying": true,
+  "role": "airlift harvesters to distant spice",
+  "pickup_range": 48,
+  "assist_distance": 380,
+  "auto_assist": true
+}

@@ -9,10 +9,10 @@ enum Terrain { SAND, ROCK, SPICE, BLOOM }
 enum Team { PLAYER, ENEMY }
 
 const TERRAIN_COLORS := {
-	Terrain.SAND: Color(0.76, 0.62, 0.35),
-	Terrain.ROCK: Color(0.42, 0.38, 0.34),
-	Terrain.SPICE: Color(0.55, 0.28, 0.72),
-	Terrain.BLOOM: Color(0.75, 0.45, 0.9),
+	Terrain.SAND: Color(0.78, 0.64, 0.38),
+	Terrain.ROCK: Color(0.36, 0.34, 0.33),
+	Terrain.SPICE: Color(0.72, 0.48, 0.18),
+	Terrain.BLOOM: Color(0.82, 0.58, 0.28),
 }
 
 const ARMOR_VALUE := {

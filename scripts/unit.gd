@@ -422,28 +422,40 @@ func _recover_stuck() -> void:
 
 
 func _draw() -> void:
-	# Placeholder silhouette by class size + accent; short label for readability
+	# Art pass v0.1: readable class silhouettes (placeholder, not final art)
 	match unit_id:
-		"u_infantry", "u_trooper_h", "ash_infantry", "ash_flame":
-			var half := Vector2(radius * 0.7, radius)
+		"u_infantry", "u_trooper_h", "ash_infantry", "ash_flame", "coil_infantry", "coil_guard":
+			var half := Vector2(radius * 0.55, radius)
 			draw_rect(Rect2(-half, half * 2.0), team_color, true)
+			draw_circle(Vector2(0, -radius * 0.55), radius * 0.35, team_color.lightened(0.1))
 			if unit_id == "ash_flame":
 				draw_circle(Vector2(0, -radius * 0.2), 4.0, Color(1.0, 0.7, 0.2))
+			elif unit_id == "coil_guard":
+				draw_rect(Rect2(Vector2(-radius * 0.35, radius * 0.15), Vector2(radius * 0.7, 3)), Color(0.5, 0.9, 1.0, 0.7), true)
+		"u_trike", "ash_trike", "coil_trike":
+			var wedge := PackedVector2Array([
+				Vector2(radius * 1.1, 0), Vector2(-radius * 0.7, -radius * 0.85), Vector2(-radius * 0.7, radius * 0.85)
+			])
+			draw_colored_polygon(wedge, team_color)
+			draw_circle(Vector2(-radius * 0.35, -radius * 0.55), 2.2, team_color.darkened(0.25))
+			draw_circle(Vector2(-radius * 0.35, radius * 0.55), 2.2, team_color.darkened(0.25))
 		"u_siege", "u_msa":
 			draw_rect(Rect2(Vector2(-radius, -radius * 0.7), Vector2(radius * 2.0, radius * 1.4)), team_color, true)
 			draw_circle(Vector2(0, -radius * 0.2), radius * 0.45, team_color.lightened(0.2))
+			draw_line(Vector2(0, -radius * 0.2), Vector2(radius * 1.15, -radius * 0.55), team_color.darkened(0.2), 2.5)
 		"u_tank", "u_quad", "ash_tank", "ash_quad", "coil_tank", "coil_quad":
 			draw_rect(Rect2(Vector2(-radius, -radius * 0.85), Vector2(radius * 2.0, radius * 1.7)), team_color, true)
+			draw_rect(
+				Rect2(Vector2(-radius * 0.55, -radius * 0.35), Vector2(radius * 1.1, radius * 0.7)),
+				team_color.darkened(0.12),
+				true
+			)
 		"coil_air":
-			# Diamond + wings — readable air silhouette
 			var pts := PackedVector2Array([
 				Vector2(0, -radius), Vector2(radius, 0), Vector2(0, radius * 0.6), Vector2(-radius, 0)
 			])
 			draw_colored_polygon(pts, team_color)
 			draw_line(Vector2(-radius * 1.2, 0), Vector2(radius * 1.2, 0), team_color.lightened(0.3), 2.0)
-		"coil_infantry", "coil_guard":
-			var half := Vector2(radius * 0.75, radius)
-			draw_rect(Rect2(-half, half * 2.0), team_color, true)
 		_:
 			draw_circle(Vector2.ZERO, radius, team_color)
 	if flying:

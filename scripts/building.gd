@@ -314,6 +314,8 @@ func _spawn_unit(unit_id: String) -> void:
 	var scene: PackedScene
 	if unit_id.ends_with("harvester"):
 		scene = preload("res://scenes/harvester.tscn")
+	elif unit_id.contains("carryall"):
+		scene = preload("res://scenes/carryall.tscn")
 	else:
 		scene = preload("res://scenes/unit.tscn")
 	var u: CharacterBody2D = scene.instantiate()

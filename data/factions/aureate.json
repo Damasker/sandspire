@@ -17,7 +17,8 @@
   "produces": {
     "b_barracks": ["u_infantry", "u_trooper_h"],
     "b_factory": ["u_trike", "u_quad", "u_tank", "u_siege", "u_msa"],
-    "b_refinery": ["u_harvester"]
+    "b_refinery": ["u_harvester"],
+    "b_radar": ["u_carryall"]
   },
   "ai_units": ["u_infantry", "u_quad", "u_tank"]
 }

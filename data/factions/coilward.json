@@ -19,7 +19,7 @@
     "b_barracks": ["coil_infantry", "coil_guard"],
     "b_factory": ["coil_trike", "coil_quad", "coil_tank"],
     "b_refinery": ["coil_harvester"],
-    "b_radar": ["coil_air"]
+    "b_radar": ["coil_air", "u_carryall"]
   },
   "building_mods": {
     "b_turret": {

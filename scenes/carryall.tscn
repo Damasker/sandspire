@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://sandspirecarry001"]
+
+[ext_resource type="Script" path="res://scripts/carryall.gd" id="1_carry"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1"]
+radius = 16.0
+
+[node name="Carryall" type="CharacterBody2D"]
+collision_layer = 1
+collision_mask = 0
+z_index = 26
+script = ExtResource("1_carry")
+unit_id = "u_carryall"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_1")

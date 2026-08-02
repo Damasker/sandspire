@@ -10,6 +10,7 @@ enum State { IDLE, SEEK, HARVEST, RETURN, UNLOAD }
 var state: State = State.IDLE
 var cargo: int = 0
 var auto_harvest: bool = true
+var carried: bool = false
 
 var _world_map: Node2D
 var _economy: Node
@@ -18,6 +19,7 @@ var _harvest_cell: Vector2i = Vector2i(-1, -1)
 var _harvest_accum: float = 0.0
 var _unload_accum: float = 0.0
 var _refinery: Node2D
+var _carrier: Node = null
 
 
 func _ready() -> void:
@@ -63,11 +65,60 @@ func _bind_world() -> void:
 
 func command_move(world_pos: Vector2) -> void:
 	## Manual move pauses auto FSM until arrival, then resumes.
+	if carried:
+		return
 	super.command_move(world_pos)
 	state = State.IDLE
 
 
+func wants_carryall_assist(min_dist: float) -> bool:
+	if carried:
+		return false
+	if not alive:
+		return false
+	if not auto_harvest:
+		return false
+	var st := int(state)
+	if st != int(State.SEEK) and st != int(State.IDLE):
+		return false
+	if _harvest_cell.x < 0 or _world_map == null:
+		return false
+	var spice_pos: Vector2 = _world_map.cell_to_world_center(_harvest_cell)
+	return global_position.distance_to(spice_pos) >= min_dist
+
+
+func get_assist_drop_position() -> Vector2:
+	if _harvest_cell.x >= 0 and _world_map:
+		return _world_map.cell_to_world_center(_harvest_cell)
+	return global_position
+
+
+func begin_carry(carrier: Node) -> void:
+	carried = true
+	flying = true
+	_carrier = carrier
+	_manual_move = false
+	_has_goal = false
+	_waypoints.clear()
+	velocity = Vector2.ZERO
+	state = State.IDLE
+
+
+func end_carry(at: Vector2) -> void:
+	carried = false
+	flying = false
+	_carrier = null
+	global_position = at
+	velocity = Vector2.ZERO
+	if auto_harvest:
+		_enter(State.SEEK if cargo < cargo_capacity else State.RETURN)
+
+
 func _physics_process(delta: float) -> void:
+	if carried:
+		velocity = Vector2.ZERO
+		queue_redraw()
+		return
 	if _manual_move:
 		if _move_toward_target(delta):
 			if auto_harvest:
@@ -106,12 +157,12 @@ func _enter(next: State) -> void:
 
 func _pick_spice_target() -> void:
 	if _world_map == null or not _world_map.has_method("find_nearest_spice_cell"):
-		_enter(State.IDLE)
-		auto_harvest = false
+		# Bind is deferred; stay IDLE without killing auto-harvest.
+		state = State.IDLE
 		return
 	var cell: Vector2i = _world_map.find_nearest_spice_cell(global_position)
 	if cell.x < 0:
-		_enter(State.IDLE)
+		state = State.IDLE
 		return
 	_harvest_cell = cell
 	set_destination(_world_map.cell_to_world_center(cell))
@@ -216,9 +267,35 @@ func _tick_unload(delta: float) -> void:
 
 
 func _draw() -> void:
-	super._draw()
-	# Cargo bar
+	# Wide harvester chassis + scoop silhouette
+	var body := Rect2(Vector2(-radius * 1.15, -radius * 0.7), Vector2(radius * 2.3, radius * 1.4))
+	draw_rect(body, team_color, true)
+	draw_rect(
+		Rect2(Vector2(radius * 0.55, -radius * 0.35), Vector2(radius * 0.55, radius * 0.7)),
+		team_color.darkened(0.15),
+		true
+	)
+	if carried:
+		draw_arc(Vector2.ZERO, radius + 5.0, 0, TAU, 20, Color(0.95, 0.85, 0.3, 0.65), 1.5)
+	if selected:
+		draw_arc(Vector2.ZERO, radius + 4.0, 0, TAU, 28, Color(1, 1, 0.3), 2.0)
 	var ratio := float(cargo) / float(maxi(cargo_capacity, 1))
-	var bar := Rect2(Vector2(-radius, -radius - 8), Vector2(radius * 2.0 * ratio, 3))
 	draw_rect(Rect2(Vector2(-radius, -radius - 8), Vector2(radius * 2.0, 3)), Color(0, 0, 0, 0.5), true)
-	draw_rect(bar, Color(0.85, 0.65, 0.15), true)
+	draw_rect(
+		Rect2(Vector2(-radius, -radius - 8), Vector2(radius * 2.0 * ratio, 3)),
+		Color(0.85, 0.65, 0.15),
+		true
+	)
+	var font := ThemeDB.fallback_font
+	if font and short_label != "":
+		var fs := 9
+		var tw := font.get_string_size(short_label, HORIZONTAL_ALIGNMENT_LEFT, -1, fs)
+		draw_string(
+			font,
+			Vector2(-tw.x * 0.5, radius + 11.0),
+			short_label,
+			HORIZONTAL_ALIGNMENT_LEFT,
+			-1,
+			fs,
+			Color(0.95, 0.9, 0.7)
+		)

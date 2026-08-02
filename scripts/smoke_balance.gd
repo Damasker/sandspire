@@ -61,6 +61,7 @@ func _run() -> void:
 		var dps := float(u.get("dps", -1))
 		var bt := float(u.get("build_time", 0))
 		var is_harv := uid.contains("harvester")
+		var is_utility := is_harv or uid.contains("carryall")
 		if bt <= 0.0:
 			push_error("[smoke_balance] %s build_time must be > 0" % uid)
 			quit(1)
@@ -76,6 +77,15 @@ func _run() -> void:
 				return
 			if dps != 0.0:
 				push_error("[smoke_balance] harvester %s dps must be 0" % uid)
+				quit(1)
+				return
+		elif is_utility:
+			if cost <= 0:
+				push_error("[smoke_balance] utility %s cost must be > 0" % uid)
+				quit(1)
+				return
+			if dps != 0.0:
+				push_error("[smoke_balance] utility %s dps must be 0" % uid)
 				quit(1)
 				return
 		else:

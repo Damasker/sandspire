@@ -17,7 +17,8 @@
   "produces": {
     "b_barracks": ["ash_infantry", "ash_flame"],
     "b_factory": ["ash_trike", "ash_quad", "ash_tank"],
-    "b_refinery": ["ash_harvester"]
+    "b_refinery": ["ash_harvester"],
+    "b_radar": ["u_carryall"]
   },
   "ai_units": ["ash_infantry", "ash_quad", "ash_tank"]
 }

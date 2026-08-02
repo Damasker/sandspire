@@ -209,15 +209,33 @@ func _in_ellipse(x: int, y: int, cx: int, cy: int, rx: int, ry: int) -> bool:
 
 func _draw() -> void:
 	var ts := GameConstants.TILE_SIZE
+	var canyon := str(map_layout) == "canyon"
 	for y in GameConstants.MAP_HEIGHT:
 		for x in GameConstants.MAP_WIDTH:
 			var idx := y * GameConstants.MAP_WIDTH + x
 			var t: int = int(_terrain[idx])
 			var color: Color = GameConstants.TERRAIN_COLORS[t]
 			var spice_amt: int = int(_spice[idx])
-			if spice_amt > 0 and t == GameConstants.Terrain.SPICE:
+			if canyon and t == GameConstants.Terrain.SAND:
+				# Cooler floor in the shelf corridor for Ridge/Canyon readability
+				color = color.darkened(0.08 + 0.04 * float((x + y) % 3))
+			if spice_amt > 0 and (t == GameConstants.Terrain.SPICE or t == GameConstants.Terrain.BLOOM):
 				var ratio := clampf(float(spice_amt) / float(SPICE_AMOUNT_DEFAULT), 0.25, 1.0)
-				color = color.darkened(1.0 - ratio)
+				color = color.lightened(ratio * 0.12).darkened((1.0 - ratio) * 0.35)
+			# Sand grain noise (deterministic checker dither)
+			if t == GameConstants.Terrain.SAND and ((x + y * 3) % 5) == 0:
+				color = color.lightened(0.04)
 			draw_rect(Rect2(x * ts, y * ts, ts, ts), color, true)
+			var ox := x * ts
+			var oy := y * ts
 			if t == GameConstants.Terrain.ROCK:
-				draw_rect(Rect2(x * ts, y * ts, ts, ts), Color(0, 0, 0, 0.12), false, 1.0)
+				# Hatch + rim so rock shelves read against sand
+				draw_line(Vector2(ox + 2, oy + 2), Vector2(ox + ts - 2, oy + ts - 2), Color(0, 0, 0, 0.22), 1.0)
+				draw_line(Vector2(ox + ts - 2, oy + 3), Vector2(ox + 3, oy + ts - 2), Color(1, 1, 1, 0.06), 1.0)
+				draw_rect(Rect2(ox, oy, ts, ts), Color(0.05, 0.05, 0.06, 0.2), false, 1.0)
+			elif t == GameConstants.Terrain.SPICE or t == GameConstants.Terrain.BLOOM:
+				# Speckle so spice fields pop at zoom
+				draw_circle(Vector2(ox + ts * 0.3, oy + ts * 0.35), 1.6, Color(1.0, 0.85, 0.35, 0.45))
+				draw_circle(Vector2(ox + ts * 0.7, oy + ts * 0.65), 1.2, Color(0.95, 0.7, 0.2, 0.35))
+				if t == GameConstants.Terrain.BLOOM:
+					draw_arc(Vector2(ox + ts * 0.5, oy + ts * 0.5), ts * 0.35, 0, TAU, 10, Color(1, 0.9, 0.4, 0.2), 1.0)

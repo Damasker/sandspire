@@ -1,8 +1,8 @@
-# Sandspire ??? server 110 helpers
+# Sandspire — server / local helpers
 GODOT ?= $(HOME)/.local/bin/godot
 PROJECT ?= .
 
-.PHONY: smoke smoke-economy smoke-build smoke-m1 smoke-power smoke-fog smoke-path smoke-ai smoke-roster smoke-worm smoke-coil smoke-balance smoke-mission smoke-campaign smoke-ux smoke-menu smoke-all import doctor export-linux templates
+.PHONY: smoke smoke-economy smoke-build smoke-m1 smoke-power smoke-fog smoke-path smoke-ai smoke-roster smoke-worm smoke-coil smoke-balance smoke-mission smoke-campaign smoke-ux smoke-menu smoke-carryall smoke-all import doctor export-linux templates
 
 doctor:
 	@echo "host: $$(hostname)"
@@ -69,4 +69,7 @@ smoke-ux:
 smoke-menu:
 	$(GODOT) --headless --path $(PROJECT) -s res://scripts/smoke_menu.gd
 
-smoke-all: smoke smoke-economy smoke-build smoke-m1 smoke-power smoke-fog smoke-path smoke-ai smoke-roster smoke-worm smo
+smoke-carryall:
+	$(GODOT) --headless --path $(PROJECT) -s res://scripts/smoke_carryall.gd
+
+smoke-all: smoke smoke-economy smoke-build smoke-m1 smoke-power smoke-fog smoke-path smoke-ai smoke-roster smoke-worm smoke-coil smoke-balance smoke-mission smoke-campaign smoke-ux smoke-menu smoke-carryall
