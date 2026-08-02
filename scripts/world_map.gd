@@ -8,8 +8,10 @@ const SPICE_AMOUNT_DEFAULT := 200
 const BLOOM_AMOUNT_DEFAULT := 500
 const BLOOM_REFRESH_INTERVAL := 45.0
 
-## Mission map.params.map_seed may set this before _ready (S14 variants).
+## Mission/skirmish may set these before _ready (S14 / lobby).
 var map_seed: int = 11042
+## "ridge" (classic) or "canyon" (map 2).
+var map_layout: String = "ridge"
 
 var _terrain: PackedByteArray = PackedByteArray()
 var _spice: PackedInt32Array = PackedInt32Array()
@@ -131,31 +133,47 @@ func _generate() -> void:
 	var n := GameConstants.MAP_WIDTH * GameConstants.MAP_HEIGHT
 	_terrain.resize(n)
 	_spice.resize(n)
-	# Seed-driven spice jitter; rock platforms stay playable for all variants.
+	_bloom_cells.clear()
 	var spice_shift := int(rng.randi_range(-2, 2))
+	var layout := map_layout.to_lower()
 	for y in GameConstants.MAP_HEIGHT:
 		for x in GameConstants.MAP_WIDTH:
 			var t := GameConstants.Terrain.SAND
 			var spice_amt := 0
-			if x > 8 and x < 22 and y > 10 and y < 24:
-				t = GameConstants.Terrain.ROCK
-			elif x > 32 and x < 42 and y > 6 and y < 16:
-				t = GameConstants.Terrain.ROCK
-			elif _in_ellipse(x, y, 28 + spice_shift, 22, 5, 3):
-				t = GameConstants.Terrain.SPICE
-				spice_amt = SPICE_AMOUNT_DEFAULT
-			elif _in_ellipse(x, y, 38, 28, 4, 3):
-				t = GameConstants.Terrain.SPICE
-				spice_amt = SPICE_AMOUNT_DEFAULT
-			elif _in_ellipse(x, y, 30, 20, 1, 1) and rng.randf() > 0.4:
-				t = GameConstants.Terrain.BLOOM
-				spice_amt = BLOOM_AMOUNT_DEFAULT
-				_bloom_cells.append(Vector2i(x, y))
+			if layout == "canyon":
+				# Map 2: west + east shelves, spice river down the middle.
+				if x > 6 and x < 20 and y > 11 and y < 27:
+					t = GameConstants.Terrain.ROCK
+				elif x > 28 and x < 44 and y > 3 and y < 18:
+					t = GameConstants.Terrain.ROCK
+				elif x > 21 and x < 27 and y > 8 and y < 28:
+					t = GameConstants.Terrain.SPICE
+					spice_amt = SPICE_AMOUNT_DEFAULT
+				elif _in_ellipse(x, y, 24, 18 + spice_shift, 2, 2) and rng.randf() > 0.35:
+					t = GameConstants.Terrain.BLOOM
+					spice_amt = BLOOM_AMOUNT_DEFAULT
+					_bloom_cells.append(Vector2i(x, y))
+			else:
+				# Ridge (classic)
+				if x > 8 and x < 22 and y > 10 and y < 24:
+					t = GameConstants.Terrain.ROCK
+				elif x > 32 and x < 42 and y > 6 and y < 16:
+					t = GameConstants.Terrain.ROCK
+				elif _in_ellipse(x, y, 28 + spice_shift, 22, 5, 3):
+					t = GameConstants.Terrain.SPICE
+					spice_amt = SPICE_AMOUNT_DEFAULT
+				elif _in_ellipse(x, y, 38, 28, 4, 3):
+					t = GameConstants.Terrain.SPICE
+					spice_amt = SPICE_AMOUNT_DEFAULT
+				elif _in_ellipse(x, y, 30, 20, 1, 1) and rng.randf() > 0.4:
+					t = GameConstants.Terrain.BLOOM
+					spice_amt = BLOOM_AMOUNT_DEFAULT
+					_bloom_cells.append(Vector2i(x, y))
 			var idx := y * GameConstants.MAP_WIDTH + x
 			_terrain[idx] = t
 			_spice[idx] = spice_amt
 	if _bloom_cells.is_empty():
-		_bloom_cells.append(Vector2i(30, 20))
+		_bloom_cells.append(Vector2i(24 if layout == "canyon" else 30, 18 if layout == "canyon" else 20))
 
 
 func _refresh_blooms() -> void:

@@ -84,8 +84,17 @@ func map_params() -> Dictionary:
 func _apply_map_params() -> void:
 	var params := map_params()
 	var wm := get_parent().get_node_or_null("WorldMap")
-	if wm and params.has("map_seed"):
-		wm.map_seed = int(params.get("map_seed", 11042))
+	if wm == null:
+		return
+	if params.has("map_seed"):
+		wm.map_seed = int(params["map_seed"])
+	if params.has("map_layout") and "map_layout" in wm:
+		wm.map_layout = str(params["map_layout"])
+	var sk := get_parent().get_node_or_null("SkirmishConfig")
+	if sk and str(mission_id) == "" and str(sk.map_id) != "":
+		wm.map_seed = int(sk.map_seed)
+		if "map_layout" in wm:
+			wm.map_layout = str(sk.map_id)
 
 
 func _apply_skirmish_from_def() -> void:
@@ -103,9 +112,16 @@ func _apply_skirmish_from_def() -> void:
 
 func _setup_default_skirmish() -> void:
 	mission_id = ""
+	var sk := get_parent().get_node_or_null("SkirmishConfig")
+	var map_name := "ridge"
+	var seed_v := 11042
+	if sk:
+		map_name = str(sk.map_id)
+		seed_v = int(sk.map_seed)
 	mission_def = {
 		"id": "skirmish",
-		"title": "Skirmish",
+		"title": "Skirmish (%s)" % map_name,
+		"map": {"params": {"map_seed": seed_v, "map_layout": map_name}},
 		"win_text": "Victory — Enemy camp destroyed",
 		"lose_text": "Defeat — Construction Yard lost",
 		"objectives": [
@@ -128,6 +144,7 @@ func _setup_default_skirmish() -> void:
 			}
 		],
 	}
+	_apply_map_params()
 	_build_trackers_from_def()
 
 

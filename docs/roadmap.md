@@ -51,6 +51,11 @@ Cadence: 2-week sprints. Full canvas plan may live in Cursor; this is the repo s
 
 - [x] Three houses, balance v1, AI/path/FoW/power, M1 slice
 
+## Post-MVP
+
+- [x] Skirmish lobby: faction picker + Canyon map #2
+- [ ] Art pass v0.1 / carryall / more maps
+
 ## Out of MVP
 
 Multiplayer, workshop mods, public map editor, mobile, voiced Mentat, full RU mission text, Steam packaging.

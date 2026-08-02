@@ -1,8 +1,7 @@
 extends Node
-## Skirmish / campaign stub (S13–S14).
-## --player=… --enemy=… --difficulty=… --mission=… --campaign=rise_of_sand
-## --campaign-menu → opens campaign picker
-## Env: SANDSPIRE_PLAYER / ENEMY / DIFFICULTY / MISSION / CAMPAIGN
+## Skirmish / campaign stub (S13–S16+).
+## --player=… --enemy=… --difficulty=… --map=ridge|canyon --mission=… --campaign=
+## Env: SANDSPIRE_PLAYER / ENEMY / DIFFICULTY / MAP / MISSION / CAMPAIGN
 
 const CampaignDB := preload("res://scripts/campaign_db.gd")
 
@@ -15,9 +14,15 @@ var enemy_faction: String = "ashveil"
 var difficulty: String = "normal"
 var mission_id: String = ""
 var campaign_id: String = ""
+var map_id: String = "ridge"
+var map_seed: int = 11042
 var want_campaign_menu: bool = false
 
 const DIFFICULTIES := ["easy", "normal", "hard"]
+const MAPS := {
+	"ridge": 11042,
+	"canyon": 88421,
+}
 
 
 func _ready() -> void:
@@ -61,11 +66,14 @@ func _parse() -> void:
 			mission_id = s.get_slice("=", 1).strip_edges()
 		elif s.begins_with("campaign=") or s.begins_with("campaign_id="):
 			campaign_id = s.get_slice("=", 1).strip_edges()
+		elif s.begins_with("map=") or s.begins_with("map_id="):
+			map_id = s.get_slice("=", 1).strip_edges().to_lower()
 	var env_p := OS.get_environment("SANDSPIRE_PLAYER")
 	var env_e := OS.get_environment("SANDSPIRE_ENEMY")
 	var env_d := OS.get_environment("SANDSPIRE_DIFFICULTY")
 	var env_m := OS.get_environment("SANDSPIRE_MISSION")
 	var env_c := OS.get_environment("SANDSPIRE_CAMPAIGN")
+	var env_map := OS.get_environment("SANDSPIRE_MAP")
 	var env_menu := OS.get_environment("SANDSPIRE_CAMPAIGN_MENU")
 	if env_p != "":
 		player_faction = env_p.to_lower()
@@ -77,6 +85,8 @@ func _parse() -> void:
 		mission_id = env_m.strip_edges()
 	if env_c != "":
 		campaign_id = env_c.strip_edges()
+	if env_map != "":
+		map_id = env_map.strip_edges().to_lower()
 	if env_menu == "1" or env_menu.to_lower() == "true":
 		want_campaign_menu = true
 	if not FactionDatabase.all_ids().has(player_faction):
@@ -85,6 +95,9 @@ func _parse() -> void:
 		enemy_faction = "ashveil"
 	if difficulty not in DIFFICULTIES:
 		difficulty = "normal"
+	if not MAPS.has(map_id):
+		map_id = "ridge"
+	map_seed = int(MAPS[map_id])
 	if campaign_id != "" and CampaignDB.load_campaign(campaign_id).is_empty():
 		push_warning("SkirmishConfig: unknown campaign '%s'" % campaign_id)
 		campaign_id = ""
@@ -110,3 +123,10 @@ func set_difficulty(diff_id: String) -> void:
 	if difficulty not in DIFFICULTIES:
 		difficulty = "normal"
 	difficulty_changed.emit(difficulty)
+
+
+func set_map(id: String) -> void:
+	map_id = id.to_lower()
+	if not MAPS.has(map_id):
+		map_id = "ridge"
+	map_seed = int(MAPS[map_id])

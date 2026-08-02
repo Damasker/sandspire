@@ -1,5 +1,5 @@
 extends SceneTree
-## S16 smoke: main menu + version + campaign navigation stubs.
+## S16+ smoke: main menu, skirmish lobby, canyon map load.
 ## Run: godot --headless --path . -s res://scripts/smoke_menu.gd
 
 const Version := preload("res://scripts/version.gd")
@@ -39,24 +39,66 @@ func _run() -> void:
 			push_error("[smoke_menu] missing %s" % need)
 			quit(1)
 			return
-	if root.get_node_or_null("GameOptions") == null or root.get_node_or_null("OptionsPanel") == null:
-		push_error("[smoke_menu] options nodes missing")
+	var lobby: Node = root.get_node_or_null("SkirmishLobby")
+	if lobby == null or not lobby.has_method("open_lobby"):
+		push_error("[smoke_menu] SkirmishLobby missing")
 		quit(1)
 		return
+	lobby.open_lobby()
+	await process_frame
+	if not lobby.visible:
+		push_error("[smoke_menu] lobby not visible")
+		quit(1)
+		return
+	var map_pick: OptionButton = lobby.get_node_or_null("Panel/MapPick")
+	if map_pick == null or map_pick.item_count < 2:
+		push_error("[smoke_menu] map picker needs 2 maps")
+		quit(1)
+		return
+	print("[smoke_menu] lobby OK maps=%d" % map_pick.item_count)
 
-	# Campaign menu reachable
-	err = change_scene_to_file("res://scenes/campaign_menu.tscn")
+	# Canyon skirmish load
+	OS.set_environment("SANDSPIRE_CAMPAIGN", "")
+	OS.set_environment("SANDSPIRE_MISSION", "")
+	OS.set_environment("SANDSPIRE_PLAYER", "coilward")
+	OS.set_environment("SANDSPIRE_ENEMY", "ashveil")
+	OS.set_environment("SANDSPIRE_DIFFICULTY", "easy")
+	OS.set_environment("SANDSPIRE_MAP", "canyon")
+	err = change_scene_to_file("res://scenes/main.tscn")
 	if err != OK:
-		push_error("[smoke_menu] campaign_menu failed")
+		push_error("[smoke_menu] skirmish load failed")
 		quit(1)
 		return
-	for i in 10:
+	for i in 20:
 		await process_frame
-	var camp := current_scene
-	if camp == null or camp.get_node_or_null("Panel/MissionList") == null:
-		push_error("[smoke_menu] campaign list missing")
+	var skirmish := current_scene
+	if skirmish == null:
+		push_error("[smoke_menu] skirmish null")
+		quit(1)
+		return
+	var sk: Node = skirmish.get_node_or_null("SkirmishConfig")
+	var wm: Node = skirmish.get_node_or_null("WorldMap")
+	if sk == null or str(sk.player_faction) != "coilward" or str(sk.map_id) != "canyon":
+		push_error("[smoke_menu] skirmish config not applied (p=%s map=%s)" % [
+			sk.player_faction if sk else "?",
+			sk.map_id if sk else "?",
+		])
+		quit(1)
+		return
+	if wm == null or str(wm.map_layout) != "canyon":
+		push_error("[smoke_menu] canyon layout not on WorldMap")
+		quit(1)
+		return
+	# Canyon should have spice corridor
+	var spice_cells := 0
+	for y in range(8, 28):
+		for x in range(21, 27):
+			if int(wm.get_spice_at(Vector2i(x, y))) > 0:
+				spice_cells += 1
+	if spice_cells < 10:
+		push_error("[smoke_menu] canyon spice corridor too small (%d)" % spice_cells)
 		quit(1)
 		return
 
-	print("[smoke_menu] OK — %s + menu + campaign picker" % Version.display_string())
+	print("[smoke_menu] OK — %s + lobby + canyon skirmish" % Version.display_string())
 	quit(0)

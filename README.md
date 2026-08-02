@@ -39,7 +39,8 @@ make smoke-all
 
 ### Skirmish
 
-Main menu → **Skirmish**, or load `res://scenes/main.tscn` with no mission flags.
+Main menu → **Skirmish** opens a lobby (player/enemy house, difficulty, map: Ridge or Canyon).  
+Cmdline: `--player=coilward --enemy=ashveil --difficulty=normal --map=canyon`
 
 ### Linux export
 
