@@ -1,9 +1,12 @@
+class_name RtsCamera
 extends Camera2D
 ## WASD / arrows pan, wheel zoom, optional edge scroll.
 
 @export var pan_speed: float = 600.0
 @export var edge_scroll_margin: float = 24.0
 @export var edge_scroll_enabled: bool = true
+## Width of opaque right HUD (build menu). Edge-scroll triggers at the game/UI seam.
+@export var ui_right_inset: float = 240.0
 @export var zoom_min: float = 0.4
 @export var zoom_max: float = 2.0
 @export var zoom_step: float = 0.1
@@ -38,20 +41,32 @@ func _process(delta: float) -> void:
 		dir.x += 1.0
 
 	if edge_scroll_enabled and get_window().has_focus():
-		var mouse := get_viewport().get_mouse_position()
-		var vr := get_viewport().get_visible_rect().size
-		if mouse.x <= edge_scroll_margin:
-			dir.x -= 1.0
-		elif mouse.x >= vr.x - edge_scroll_margin:
-			dir.x += 1.0
-		if mouse.y <= edge_scroll_margin:
-			dir.y -= 1.0
-		elif mouse.y >= vr.y - edge_scroll_margin:
-			dir.y += 1.0
+		dir += _edge_scroll_delta()
 
 	if dir != Vector2.ZERO:
 		global_position += dir.normalized() * pan_speed * delta / zoom.x
 		_clamp_position()
+
+
+func _edge_scroll_delta() -> Vector2:
+	var d := Vector2.ZERO
+	var mouse := get_viewport().get_mouse_position()
+	var vr := get_viewport().get_visible_rect().size
+	var inset := maxf(ui_right_inset, 0.0)
+	if mouse.x <= edge_scroll_margin:
+		d.x -= 1.0
+	if mouse.y <= edge_scroll_margin:
+		d.y -= 1.0
+	elif mouse.y >= vr.y - edge_scroll_margin:
+		d.y += 1.0
+	# Right: seam just left of the build panel (not while deep inside UI clicks),
+	# plus absolute screen-right fallback.
+	var seam := vr.x - inset
+	if mouse.x >= seam - edge_scroll_margin and mouse.x < seam:
+		d.x += 1.0
+	elif mouse.x >= vr.x - edge_scroll_margin:
+		d.x += 1.0
+	return d
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -70,5 +85,14 @@ func _set_zoom(value: float) -> void:
 
 func _clamp_position() -> void:
 	var half := get_viewport_rect().size * 0.5 / zoom.x
-	global_position.x = clampf(global_position.x, _bounds.position.x + half.x, _bounds.end.x - half.x)
-	global_position.y = clampf(global_position.y, _bounds.position.y + half.y, _bounds.end.y - half.y)
+	global_position.x = clamp_axis(global_position.x, half.x, _bounds.position.x, _bounds.end.x)
+	global_position.y = clamp_axis(global_position.y, half.y, _bounds.position.y, _bounds.end.y)
+
+
+## When the view is wider/taller than the map, center that axis (avoid inverted clampf stick).
+static func clamp_axis(pos: float, half: float, bound_min: float, bound_max: float) -> float:
+	var lo := bound_min + half
+	var hi := bound_max - half
+	if lo > hi:
+		return (bound_min + bound_max) * 0.5
+	return clampf(pos, lo, hi)
