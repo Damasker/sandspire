@@ -2,13 +2,14 @@
 GODOT ?= $(HOME)/.local/bin/godot
 PROJECT ?= .
 
-.PHONY: smoke smoke-economy smoke-build smoke-m1 smoke-power smoke-fog smoke-path smoke-ai smoke-roster smoke-worm smoke-coil smoke-balance smoke-mission smoke-campaign smoke-ux smoke-menu smoke-carryall smoke-all import doctor export-linux templates
+.PHONY: smoke smoke-economy smoke-build smoke-m1 smoke-power smoke-fog smoke-path smoke-ai smoke-roster smoke-worm smoke-coil smoke-balance smoke-mission smoke-campaign smoke-ux smoke-menu smoke-carryall smoke-all import doctor export-linux export-windows export-all publish-share templates
 
 doctor:
 	@echo "host: $$(hostname)"
 	@echo "godot: $$(command -v $(GODOT) || true)"
 	@$(GODOT) --version || true
 	@echo "templates: $$(ls -d $(HOME)/.local/share/godot/export_templates/4.7.1.stable 2>/dev/null || echo missing)"
+	@echo "share: $$(ls -d /srv/media/sandspire 2>/dev/null || echo missing — run make publish-share)"
 
 import:
 	$(GODOT) --headless --path $(PROJECT) --import
@@ -20,6 +21,17 @@ export-linux: templates
 	mkdir -p build/linux
 	$(GODOT) --headless --path $(PROJECT) --export-release "Linux" build/linux/Sandspire.x86_64
 	@ls -la build/linux/ || true
+
+export-windows: templates
+	mkdir -p build/windows
+	$(GODOT) --headless --path $(PROJECT) --export-release "Windows Desktop" build/windows/Sandspire.exe
+	@ls -la build/windows/ || true
+
+export-all: export-linux export-windows
+
+# Copy latest builds to Samba [media] → \\192.168.168.110\media\sandspire
+publish-share: export-all
+	bash scripts/publish_share.sh
 
 smoke:
 	$(GODOT) --headless --path $(PROJECT) -s res://scripts/smoke_boot.gd

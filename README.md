@@ -52,6 +52,20 @@ make export-linux
 
 See [docs/export.md](docs/export.md).
 
+### LAN test share (Windows clients)
+
+Existing Samba share **`media`** on 110 (`/srv/media`, guest OK). Playable builds live at:
+
+`\\192.168.168.110\media\sandspire\windows\Sandspire.exe`
+
+Rebuild + publish from the server:
+
+```bash
+ssh home-mike
+cd /home/mike/projects/sandspire
+make publish-share
+```
+
 ### From Windows workstation
 
 ```powershell
