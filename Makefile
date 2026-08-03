@@ -2,7 +2,7 @@
 GODOT ?= $(HOME)/.local/bin/godot
 PROJECT ?= .
 
-.PHONY: smoke smoke-economy smoke-build smoke-m1 smoke-power smoke-fog smoke-path smoke-ai smoke-roster smoke-worm smoke-coil smoke-balance smoke-mission smoke-campaign smoke-ux smoke-menu smoke-carryall smoke-camera smoke-all import doctor export-linux export-windows export-all publish-share templates
+.PHONY: smoke smoke-economy smoke-build smoke-m1 smoke-power smoke-fog smoke-path smoke-ai smoke-roster smoke-worm smoke-coil smoke-balance smoke-mission smoke-campaign smoke-ux smoke-menu smoke-carryall smoke-camera smoke-tank smoke-all import doctor export-linux export-windows export-all publish-share templates
 
 doctor:
 	@echo "host: $$(hostname)"
@@ -87,4 +87,7 @@ smoke-carryall:
 smoke-camera:
 	$(GODOT) --headless --path $(PROJECT) -s res://scripts/smoke_camera.gd
 
-smoke-all: smoke smoke-economy smoke-build smoke-m1 smoke-power smoke-fog smoke-path smoke-ai smoke-roster smoke-worm smoke-coil smoke-balance smoke-mission smoke-campaign smoke-ux smoke-menu smoke-carryall smoke-camera
+smoke-tank:
+	$(GODOT) --headless --path $(PROJECT) -s res://scripts/smoke_tank.gd
+
+smoke-all: smoke smoke-economy smoke-build smoke-m1 smoke-power smoke-fog smoke-path smoke-ai smoke-roster smoke-worm smoke-coil smoke-balance smoke-mission smoke-campaign smoke-ux smoke-menu smoke-carryall smoke-camera smoke-tank

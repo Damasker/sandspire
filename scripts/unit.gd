@@ -44,11 +44,19 @@ var _repath_cd: float = 0.0
 var _stuck_time: float = 0.0
 var _vision: Node
 var _pathfinder: Node
+var _facing: float = 0.0
+var _sprite: Texture2D = null
+var _use_tank_sprite: bool = false
+
+const TANK_SPRITE_PATH := "res://assets/units/tank_aureate.png"
+const TANK_UNIT_IDS := ["u_tank", "ash_tank", "coil_tank"]
+static var _tank_tex: Texture2D = null
 
 
 func _ready() -> void:
 	_def = UnitDatabase.get_unit(unit_id)
 	_apply_def()
+	_setup_sprite()
 	add_to_group("units")
 	add_to_group("selectable")
 	add_to_group("damageable")
@@ -58,6 +66,56 @@ func _ready() -> void:
 	$CollisionShape2D.shape = shape
 	call_deferred("_bind_systems")
 	queue_redraw()
+
+
+func _setup_sprite() -> void:
+	_use_tank_sprite = unit_id in TANK_UNIT_IDS
+	if not _use_tank_sprite:
+		return
+	if _tank_tex == null:
+		if ResourceLoader.exists(TANK_SPRITE_PATH):
+			_tank_tex = load(TANK_SPRITE_PATH) as Texture2D
+	_sprite = _tank_tex
+	if _sprite == null:
+		_use_tank_sprite = false
+
+
+func _update_facing() -> void:
+	if _attack_target != null and is_instance_valid(_attack_target):
+		_facing = (_target_aim_point(_attack_target) - global_position).angle()
+	elif velocity.length_squared() > 25.0:
+		_facing = velocity.angle()
+	elif _target is Vector2:
+		var to: Vector2 = (_target as Vector2) - global_position
+		if to.length_squared() > 25.0:
+			_facing = to.angle()
+
+
+func _tank_modulate() -> Color:
+	## Aureate keeps painted camo; other houses tint toward faction accent.
+	match unit_id:
+		"ash_tank":
+			return Color(1.15, 0.55, 0.35, 1.0)
+		"coil_tank":
+			return Color(0.45, 0.95, 1.05, 1.0)
+		_:
+			return Color.WHITE
+
+
+func _draw_tank_sprite() -> void:
+	if _sprite == null:
+		return
+	var tex_w := float(_sprite.get_width())
+	var tex_h := float(_sprite.get_height())
+	if tex_w <= 0.0 or tex_h <= 0.0:
+		return
+	# Fit hull into ~2.35 * radius height so tile-scale tanks stay readable, not giant.
+	var target_h := radius * 2.35
+	var target_w := target_h * (tex_w / tex_h)
+	var dest := Rect2(Vector2(-target_w * 0.5, -target_h * 0.5), Vector2(target_w, target_h))
+	draw_set_transform(Vector2.ZERO, _facing, Vector2.ONE)
+	draw_texture_rect(_sprite, dest, false, _tank_modulate())
+	draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
 
 
 func _bind_systems() -> void:
@@ -230,6 +288,7 @@ func _physics_process(delta: float) -> void:
 	_attack_cd = maxf(0.0, _attack_cd - delta)
 	_acquire_cd = maxf(0.0, _acquire_cd - delta)
 	_repath_cd = maxf(0.0, _repath_cd - delta)
+	_update_facing()
 
 	if _hold:
 		_tick_hold(delta)
@@ -422,50 +481,55 @@ func _recover_stuck() -> void:
 
 
 func _draw() -> void:
-	# Art pass v0.1: readable class silhouettes (placeholder, not final art)
-	match unit_id:
-		"u_infantry", "u_trooper_h", "ash_infantry", "ash_flame", "coil_infantry", "coil_guard":
-			var half := Vector2(radius * 0.55, radius)
-			draw_rect(Rect2(-half, half * 2.0), team_color, true)
-			draw_circle(Vector2(0, -radius * 0.55), radius * 0.35, team_color.lightened(0.1))
-			if unit_id == "ash_flame":
-				draw_circle(Vector2(0, -radius * 0.2), 4.0, Color(1.0, 0.7, 0.2))
-			elif unit_id == "coil_guard":
-				draw_rect(Rect2(Vector2(-radius * 0.35, radius * 0.15), Vector2(radius * 0.7, 3)), Color(0.5, 0.9, 1.0, 0.7), true)
-		"u_trike", "ash_trike", "coil_trike":
-			var wedge := PackedVector2Array([
-				Vector2(radius * 1.1, 0), Vector2(-radius * 0.7, -radius * 0.85), Vector2(-radius * 0.7, radius * 0.85)
-			])
-			draw_colored_polygon(wedge, team_color)
-			draw_circle(Vector2(-radius * 0.35, -radius * 0.55), 2.2, team_color.darkened(0.25))
-			draw_circle(Vector2(-radius * 0.35, radius * 0.55), 2.2, team_color.darkened(0.25))
-		"u_siege", "u_msa":
-			draw_rect(Rect2(Vector2(-radius, -radius * 0.7), Vector2(radius * 2.0, radius * 1.4)), team_color, true)
-			draw_circle(Vector2(0, -radius * 0.2), radius * 0.45, team_color.lightened(0.2))
-			draw_line(Vector2(0, -radius * 0.2), Vector2(radius * 1.15, -radius * 0.55), team_color.darkened(0.2), 2.5)
-		"u_tank", "u_quad", "ash_tank", "ash_quad", "coil_tank", "coil_quad":
-			draw_rect(Rect2(Vector2(-radius, -radius * 0.85), Vector2(radius * 2.0, radius * 1.7)), team_color, true)
-			draw_rect(
-				Rect2(Vector2(-radius * 0.55, -radius * 0.35), Vector2(radius * 1.1, radius * 0.7)),
-				team_color.darkened(0.12),
-				true
-			)
-		"coil_air":
-			var pts := PackedVector2Array([
-				Vector2(0, -radius), Vector2(radius, 0), Vector2(0, radius * 0.6), Vector2(-radius, 0)
-			])
-			draw_colored_polygon(pts, team_color)
-			draw_line(Vector2(-radius * 1.2, 0), Vector2(radius * 1.2, 0), team_color.lightened(0.3), 2.0)
-		_:
-			draw_circle(Vector2.ZERO, radius, team_color)
+	# Art pass: tank sprite (faces +X) + placeholder silhouettes for other classes
+	if _use_tank_sprite:
+		_draw_tank_sprite()
+	else:
+		match unit_id:
+			"u_infantry", "u_trooper_h", "ash_infantry", "ash_flame", "coil_infantry", "coil_guard":
+				var half := Vector2(radius * 0.55, radius)
+				draw_rect(Rect2(-half, half * 2.0), team_color, true)
+				draw_circle(Vector2(0, -radius * 0.55), radius * 0.35, team_color.lightened(0.1))
+				if unit_id == "ash_flame":
+					draw_circle(Vector2(0, -radius * 0.2), 4.0, Color(1.0, 0.7, 0.2))
+				elif unit_id == "coil_guard":
+					draw_rect(Rect2(Vector2(-radius * 0.35, radius * 0.15), Vector2(radius * 0.7, 3)), Color(0.5, 0.9, 1.0, 0.7), true)
+			"u_trike", "ash_trike", "coil_trike":
+				var wedge := PackedVector2Array([
+					Vector2(radius * 1.1, 0), Vector2(-radius * 0.7, -radius * 0.85), Vector2(-radius * 0.7, radius * 0.85)
+				])
+				draw_colored_polygon(wedge, team_color)
+				draw_circle(Vector2(-radius * 0.35, -radius * 0.55), 2.2, team_color.darkened(0.25))
+				draw_circle(Vector2(-radius * 0.35, radius * 0.55), 2.2, team_color.darkened(0.25))
+			"u_siege", "u_msa":
+				draw_rect(Rect2(Vector2(-radius, -radius * 0.7), Vector2(radius * 2.0, radius * 1.4)), team_color, true)
+				draw_circle(Vector2(0, -radius * 0.2), radius * 0.45, team_color.lightened(0.2))
+				draw_line(Vector2(0, -radius * 0.2), Vector2(radius * 1.15, -radius * 0.55), team_color.darkened(0.2), 2.5)
+			"u_quad", "ash_quad", "coil_quad":
+				draw_rect(Rect2(Vector2(-radius, -radius * 0.85), Vector2(radius * 2.0, radius * 1.7)), team_color, true)
+				draw_rect(
+					Rect2(Vector2(-radius * 0.55, -radius * 0.35), Vector2(radius * 1.1, radius * 0.7)),
+					team_color.darkened(0.12),
+					true
+				)
+			"coil_air":
+				var pts := PackedVector2Array([
+					Vector2(0, -radius), Vector2(radius, 0), Vector2(0, radius * 0.6), Vector2(-radius, 0)
+				])
+				draw_colored_polygon(pts, team_color)
+				draw_line(Vector2(-radius * 1.2, 0), Vector2(radius * 1.2, 0), team_color.lightened(0.3), 2.0)
+			_:
+				draw_circle(Vector2.ZERO, radius, team_color)
 	if flying:
 		draw_arc(Vector2.ZERO, radius + 3.0, 0, TAU, 20, Color(0.6, 0.95, 1.0, 0.55), 1.2)
-	draw_arc(Vector2.ZERO, radius, 0, TAU, 24, Color(0, 0, 0, 0.55), 2.0)
+	if not _use_tank_sprite:
+		draw_arc(Vector2.ZERO, radius, 0, TAU, 24, Color(0, 0, 0, 0.55), 2.0)
 	if selected:
 		draw_arc(Vector2.ZERO, radius + 4.0, 0, TAU, 28, Color(1, 1, 0.3), 2.0)
 	if _hold:
 		draw_arc(Vector2.ZERO, radius + 7.0, 0, TAU, 20, Color(0.95, 0.55, 0.2), 1.5)
-	draw_circle(Vector2(radius * 0.55, 0), 3.0, Color(1, 1, 1, 0.85))
+	if not _use_tank_sprite:
+		draw_circle(Vector2(radius * 0.55, 0), 3.0, Color(1, 1, 1, 0.85))
 	var ratio := clampf(hp / maxf(max_hp, 1.0), 0.0, 1.0)
 	var bar_w := radius * 2.0
 	draw_rect(Rect2(Vector2(-radius, -radius - 7), Vector2(bar_w, 3)), Color(0, 0, 0, 0.55), true)
