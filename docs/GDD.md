@@ -64,6 +64,7 @@ Default Aureate vs Ashveil on normal. Balance v1: [balance.md](balance.md). Rost
 - **Top-down 2D**, readable silhouettes, warm sand / cool rock palette.
 - Placeholder colored rectangles OK until vertical slice ships.
 - No photoreal 3D in MVP.
+- Full texture checklist + sizes: [art-spec.md](art-spec.md).
 
 ## 9. MVP scope
 
