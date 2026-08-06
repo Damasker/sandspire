@@ -92,7 +92,7 @@ ssh home-mike 'cd /home/mike/projects/sandspire && python3 scripts/fix_crlf.py &
 
 ## Docs
 
-- [GDD](docs/GDD.md) · [Roster](docs/roster.md) · [Balance](docs/balance.md)
+- [GDD](docs/GDD.md) · [Roster](docs/roster.md) · [Balance](docs/balance.md) · [Art spec](docs/art-spec.md)
 - [Missions & campaign](docs/missions.md) · [Roadmap](docs/roadmap.md)
 - [Known issues (MVP)](docs/known-issues.md) · [Export](docs/export.md) · [Trailer notes](docs/trailer-notes.md)
 
